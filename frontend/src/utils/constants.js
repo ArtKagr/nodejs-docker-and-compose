@@ -1,4 +1,4 @@
-export const URL = "http://localhost:8080";
+export const URL = "https://api.diegocrash.nomorepartiessbs.ru";
 
 export const MINIMUM_PASSWORD_LENGTH = 3;
 export const MINIMUM_USERNAME_LENGTH = 3;
