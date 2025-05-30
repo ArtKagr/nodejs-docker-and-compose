@@ -27,7 +27,7 @@ import { AuthModule } from './auth/auth.module';
         password: config.get('POSTGRES_PASSWORD'),
         database: config.get('POSTGRES_DB'),
         entities: [User, Offer, Wish, Wishlist],
-        synchronize: !!Number(config.get('TYPEORM_SYNC') ?? 1),
+        synchronize: true,
       }),
     }),
     TypeOrmModule.forFeature([User, Wish, Wishlist, Offer]),
