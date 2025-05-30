@@ -12,20 +12,23 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 
-const configService = new ConfigService();
-
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: configService.get('POSTGRES_HOST'),
-      port: configService.get('POSTGRES_PORT'),
-      username: configService.get('POSTGRES_USER'),
-      password: configService.get('POSTGRES_PASSWORD'),
-      database: configService.get('POSTGRES_DB'),
-      entities: [User, Offer, Wish, Wishlist],
-      synchronize: configService.get('TYPEORM_SYNC'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get('POSTGRES_HOST'),
+        port: config.get<number>('POSTGRES_PORT'),
+        username: config.get('POSTGRES_USER'),
+        password: config.get('POSTGRES_PASSWORD'),
+        database: config.get('POSTGRES_DB'),
+        entities: [User, Offer, Wish, Wishlist],
+        synchronize: !!Number(config.get('TYPEORM_SYNC') ?? 1),
+      }),
     }),
     TypeOrmModule.forFeature([User, Wish, Wishlist, Offer]),
     OffersModule,
