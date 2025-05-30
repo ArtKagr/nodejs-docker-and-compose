@@ -14,27 +14,18 @@ import { AuthModule } from './auth/auth.module';
 
 const configService = new ConfigService();
 
-const {
-  POSTGRES_HOST,
-  POSTGRES_PORT,
-  POSTGRES_DB,
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-  TYPEORM_SYNC = 1,
-} = process.env;
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: POSTGRES_HOST,
-      port: Number(POSTGRES_PORT),
-      username: POSTGRES_USER,
-      password: POSTGRES_PASSWORD,
-      database: POSTGRES_DB,
+      host: configService.get('POSTGRES_HOST'),
+      port: configService.get('POSTGRES_PORT'),
+      username: configService.get('POSTGRES_USER'),
+      password: configService.get('POSTGRES_PASSWORD'),
+      database: configService.get('POSTGRES_DB'),
       entities: [User, Offer, Wish, Wishlist],
-      synchronize: !!TYPEORM_SYNC,
+      synchronize: configService.get('TYPEORM_SYNC'),
     }),
     TypeOrmModule.forFeature([User, Wish, Wishlist, Offer]),
     OffersModule,
