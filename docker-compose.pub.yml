@@ -13,7 +13,7 @@ services:
 
   frontend:
     container_name: frontend
-    image: diegocrash/frontend-kupipodariday:1.0.1
+    image: diegocrash/frontend-kupipodariday:1.0.2
     ports:
       - '8080:80'
     restart: always
